@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dra. Allyson Núñez Méndez - Consejo Universitario UNED 2026-2031</title>
+    <!-- Tailwind CSS para el diseño premium y responsivo -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        violeta: '#6A0DAD',
+                        fucsia: '#E91E63',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- React y ReactDOM para la interactividad síncrona -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <!-- Babel para compilar JSX en tiempo real en el navegador -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-[#E91E63]/20 selection:text-[#6A0DAD]">
+    
+    <div id="root"></div>
+
+    <!-- CÓDIGO REACT INTERACTIVO COMPILADO POR BABEL -->
+    <script type="text/babel">
+        const { useState } = React;
+
+        // --- ICONOS VECTORIALES (SVG) INTEGRADOS PARA GARANTIZAR CARGA RÁPIDA ---
+        const CheckIcon = () => (
+            <svg className="w-5 h-5 text-[#E91E63] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+        );
+
+        const SparklesIcon = () => (
+            <svg className="w-4 h-4 text-pink-400 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+            </svg>
+        );
+
+        const ChevronIcon = () => (
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+        );
+
+        const SearchIcon = () => (
+            <svg className="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+        );
+
+        function App() {
+            const [activeSector, setActiveSector] = useState('docentes');
+            const [proposalSearch, setProposalSearch] = useState('');
+            const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+            const [copiedLink, setCopiedLink] = useState(false);
+            const [showDownloadSuccess, setShowDownloadSuccess] = useState(false);
+
+            // Propuestas e Ideas de la Comunidad
+            const [proposals, setProposals] = useState([
+                { id: 1, autor: "Dr. Carlos Brenes (Docente)", sector: "Docente", mensaje: "La regulación del uso ético y formativo de la IA en la UNED nos pondrá a la vanguardia de la educación a distancia.", votos: 24, fecha: "Hace 2 horas" },
+                { id: 2, autor: "María F. (Estudiante de Sede San Carlos)", sector: "Estudiante", mensaje: "Es urgente robustecer las becas estudiantiles para mitigar el impacto de la desigualdad económica en los territorios.", votos: 38, fecha: "Hace 1 día" },
+                { id: 3, autor: "Jorge Castro (Administrativo)", sector: "Administrativo", mensaje: "La modernización de plataformas internas aliviará de forma significativa la carga laboral diaria de procesos cotidianos.", votos: 19, fecha: "Hace 2 días" }
+            ]);
+
+            const [formName, setFormName] = useState('');
+            const [formSector, setFormSector] = useState('Estudiante');
+            const [formMessage, setFormMessage] = useState('');
+            const [submitNotification, setSubmitNotification] = useState('');
+
+            const handleProposalSubmit = (e) => {
+                e.preventDefault();
+                if (!formName || !formMessage) {
+                    setSubmitNotification('Por favor, completa todos los campos requeridos.');
+                    return;
+                }
+
+                const newProposal = {
+                    id: Date.now(),
+                    autor: `${formName} (${formSector})`,
+                    sector: formSector,
+                    mensaje: formMessage,
+                    votos: 1,
+                    fecha: "Reciente"
+                };
+
+                setProposals([newProposal, ...proposals]);
+                setFormName('');
+                setFormMessage('');
+                setSubmitNotification('¡Muchas gracias! Tu propuesta ha sido agregada con éxito al muro comunitario.');
+                
+                setTimeout(() => setSubmitNotification(''), 5000);
+            };
+
+            const handleVote = (id) => {
+                setProposals(proposals.map(p => p.id === id ? { ...p, votos: p.votos + 1 } : p));
+            };
+
+            const handleCopyLink = () => {
+                const el = document.createElement('textarea');
+                el.value = window.location.href;
+                document.body.appendChild(el);
+                el.select();
+                document.execCommand('copy');
+                document.body.removeChild(el);
+                setCopiedLink(true);
+                setTimeout(() => setCopiedLink(false), 3000);
+            };
+
+            const triggerDownload = () => {
+                setShowDownloadSuccess(true);
+                setTimeout(() => setShowDownloadSuccess(false), 5000);
+            };
+
+            const sectorsData = {
+                docentes: {
+                    title: "Para el Sector Docente",
+                    subtitle: "Estabilidad laboral, salarios justos y dignificación académica para el profesorado de jornada especial y regular.",
+                    proposals: [
+                        "Estabilidad Laboral Real: Impulsar políticas firmes en el Consejo Universitario que garanticen mejores condiciones de contratación y seguridad para el sector docente de jornada especial.",
+                        "Equidad de Jornadas: Luchar por el establecimiento de jornadas académicas acordes a las demandas reales de la docencia bimodal (virtual-presencial) y la justa retribución del tiempo invertido.",
+                        "Defensa Salarial Activa: Proteger con determinación los salarios compuestos y vigilar la aplicación del salario global definitivo frente a las regulaciones nacionales externas.",
+                        "Facilitación Tecnológica: Integrar recursos digitales innovadores que reduzcan las sobrecargas administrativas y de mediación pedagógica."
+                    ],
+                    icon: (
+                        <svg className="w-6 h-6 text-[#E91E63]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                    )
+                },
+                estudiantes: {
+                    title: "Para el Estudiantado",
+                    subtitle: "Inclusión, permanencia y democratización educativa con enfoque de derechos humanos.",
+                    proposals: [
+                        "Permanencia Estudiantil: Desarrollar políticas dirigidas a garantizar la continuidad de poblaciones vulnerables como madres jefas de hogar y pueblos originarios.",
+                        "Optimización de Becas: Promover una distribución más eficiente y justa de los recursos de becas para mitigar las brechas económicas regionales.",
+                        "Simplificación de Trámites: Agilizar las plataformas de matrícula, gestiones académicas y acreditaciones, haciéndolas accesibles desde cualquier rincón del país.",
+                        "Uso ético de Inteligencia Artificial: Promover de forma proactiva directrices claras para el uso formativo, ético y de vanguardia de la IA dentro de las asignaturas."
+                    ],
+                    icon: (
+                        <svg className="w-6 h-6 text-[#E91E63]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                            <path d="M12 14l9-5-9-5-9 5 9 5z" />
+                            <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                        </svg>
+                    )
+                },
+                administrativos: {
+                    title: "Para el Personal Administrativo",
+                    subtitle: "Gestión institucional ágil, simplificación de procesos y dignificación de la función pública.",
+                    proposals: [
+                        "Modernización y Despapelización: Promover procesos eficientes que reduzcan el papeleo excesivo en trámites de gestión diaria de la UNED.",
+                        "Protección de Derechos: Defensa irrestricta de los derechos laborales en las comisiones y sesiones plenarias del Consejo Universitario.",
+                        "Capacitación Continua: Promover cursos y talleres sobre gestión pública, ética institucional y uso de plataformas tecnológicas contemporáneas.",
+                        "Consenso Multiactores: Crear canales de comunicación transparentes entre la administración central, las sedes y los cuerpos docentes."
+                    ],
+                    icon: (
+                        <svg className="w-6 h-6 text-[#E91E63]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+                    )
+                },
+                sedes: {
+                    title: "Para las Sedes Universitarias",
+                    subtitle: "Descentralización y protagonismo territorial del quehacer universitario a nivel nacional.",
+                    proposals: [
+                        "Desarrollo e Impacto Local: Apoyar el fortalecimiento de las Sedes de la UNED para potenciar su vínculo directo con las comunidades locales.",
+                        "Equidad Regional Docente-Estudiantil: Lograr que el profesorado regional cuente con espacios físicos idóneos y herramientas tecnológicas equivalentes a la sede central.",
+                        "Extensión e Investigación Situada: Fomentar proyectos que nazcan y respondan directamente a las problemáticas sociales de los territorios de cada sede.",
+                        "Sostenibilidad de Sedes: Defender presupuestos estables para infraestructura física y conectividad de alta velocidad en sedes periféricas."
+                    ],
+                    icon: (
+                        <svg className="w-6 h-6 text-[#E91E63]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    )
+                }
+            };
+
+            const planEjes = [
+                {
+                    categoria: "Autonomía y Finanzas",
+                    eje: "Defensa de la Autonomía y el FEES",
+                    descripcion: "Lucha firme por el financiamiento justo de la educación superior estatal y la protección de los artículos 84 y 85 de la Constitución Política costarricense frente a los embates presupuestarios externos.",
+                    tags: ["fees", "autonomia", "financiamiento", "presupuesto"]
+                },
+                {
+                    categoria: "Docencia y Trabajo",
+                    eje: "Estabilidad de la Jornada Especial",
+                    descripcion: "Políticas destinadas a proteger los derechos laborales del profesorado de jornada especial, defendiendo salarios estables, jornadas justas y carrera docente.",
+                    tags: ["docentes", "jornada especial", "salario", "estabilidad", "derechos"]
+                },
+                {
+                    categoria: "Vanguardia Tecnológica",
+                    eje: "Uso Ético e Integrado de la IA",
+                    descripcion: "Establecer la primera política institucional de la UNED para regular el uso ético, transparente y estratégico de la Inteligencia Artificial en docencia, investigación y procesos administrativos.",
+                    tags: ["ia", "inteligencia artificial", "tecnologia", "innovacion"]
+                },
+                {
+                    categoria: "Equidad Estudiantil",
+                    eje: "Permanencia de Poblaciones Vulnerables",
+                    descripcion: "Políticas de acción afirmativa para robustecer el acompañamiento y las becas de madres jefas de hogar, comunidades originarias y zonas con menor desarrollo social.",
+                    tags: ["estudiantes", "becas", "jefas de hogar", "inclusion"]
+                },
+                {
+                    categoria: "Desarrollo Académico",
+                    eje: "Humanidades, Ciencias Sociales y Nuevas Carreras",
+                    descripcion: "Defender las ciencias sociales y las humanidades de la mano de carreras enfocadas en la economía digital y el pensamiento crítico inspirado en la histórica Reforma de Córdoba.",
+                    tags: ["carreras", "humanidades", "ciencias sociales", "posgrados"]
+                },
+                {
+                    categoria: "Territorialidad",
+                    eje: "Fortalecimiento de las Sedes Universitarias",
+                    descripcion: "Garantizar que las sedes cuenten con la infraestructura, conectividad de alta velocidad y recursos necesarios para articular de forma idónea a docentes y estudiantes locales.",
+                    tags: ["sedes", "regiones", "territorios", "comunidad"]
+                }
+            ];
+
+            const filteredEjes = planEjes.filter(item => {
+                const search = proposalSearch.toLowerCase();
+                return (
+                    item.eje.toLowerCase().includes(search) ||
+                    item.descripcion.toLowerCase().includes(search) ||
+                    item.categoria.toLowerCase().includes(search) ||
+                    item.tags.some(t => t.includes(search))
+                );
+            });
+
+            return (
+                <div className="min-h-screen bg-slate-50 text-slate-800">
+                    
+                    {/* BARRA DE NAVEGACIÓN */}
+                    <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-100">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="flex justify-between h-20">
+                                <div className="flex items-center space-x-3">
+                                    <div className="w-14 h-14 rounded-full border border-slate-100 p-0.5 bg-white flex items-center justify-center overflow-hidden">
+                                        <img src="logotipo.png" alt="Logo Allyson" className="w-full h-full object-contain" />
+                                    </div>
+                                    <div>
+                                        <span className="block text-lg font-bold text-violeta leading-tight">Allyson Núñez</span>
+                                        <span className="block text-xs font-semibold text-fucsia tracking-wider uppercase">Consejo Universitario</span>
+                                    </div>
+                                </div>
+                                <div className="hidden md:flex items-center space-x-6">
+                                    <a href="#inicio" className="text-sm font-semibold text-slate-600 hover:text-violeta">Inicio</a>
+                                    <a href="#sectores" className="text-sm font-semibold text-slate-600 hover:text-violeta">Compromisos</a>
+                                    <a href="#trayectoria" className="text-sm font-semibold text-slate-600 hover:text-violeta">Trayectoria</a>
+                                    <a href="#plan" className="text-sm font-semibold text-slate-600 hover:text-violeta">Plan</a>
+                                    <a href="#buzon" className="text-sm font-semibold text-slate-600 hover:text-violeta">Tu Voz</a>
+                                    <a href="#contacto" className="bg-violeta text-white text-xs font-bold px-4 py-2.5 rounded-full hover:bg-opacity-90 shadow-md">CONTACTAR</a>
+                                </div>
+                                <div className="flex items-center md:hidden">
+                                    <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-slate-600 p-2">
+                                        {mobileMenuOpen ? "✕" : "☰"}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+
+                    {/* HERO SECTION */}
+                    <section id="inicio" className="relative bg-gradient-to-br from-purple-900 via-violeta to-indigo-950 text-white py-16 md:py-24 px-6 overflow-hidden">
+                        <div className="max-w-7xl mx-auto grid md:grid-cols-12 gap-12 items-center relative z-10">
+                            <div className="md:col-span-7 space-y-6 text-center md:text-left">
+                                <div className="inline-flex items-center space-x-2 bg-white/10 px-3 py-1.5 rounded-full border border-white/20 text-xs font-bold tracking-wider uppercase">
+                                    <SparklesIcon />
+                                    <span>Candidata Interna UNED 2026 - 2031</span>
+                                </div>
+                                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight">
+                                    Experiencia que <br />
+                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-fuchsia-400">construye futuro</span>
+                                </h1>
+                                <p className="text-base sm:text-lg text-purple-100 max-w-2xl leading-relaxed font-light">
+                                    Soy la <strong>Dra. Allyson Núñez Méndez</strong>. Docente, politóloga y especialista en derechos humanos. Mi compromiso es legislar y gobernar con visión de consenso e inclusión, defendiendo a todo el personal docente de jornada especial y regular, administrativo y propiciando mejores condiciones para el estudiantado de todas las sedes.
+                                </p>
+                                <div className="flex flex-col sm:flex-row justify-center md:justify-start items-center gap-4 pt-4">
+                                    <a href="#plan" className="w-full sm:w-auto bg-fucsia hover:bg-opacity-90 text-white px-8 py-4 rounded-xl font-bold shadow-lg transition-all text-center flex items-center justify-center gap-2">
+                                        Ver Propuestas <ChevronIcon />
+                                    </a>
+                                    <button onClick={triggerDownload} className="w-full sm:w-auto bg-white/10 hover:bg-white/15 border border-white/20 text-white px-8 py-4 rounded-xl font-bold backdrop-blur-md transition-all">
+                                        Descargar Plan (PDF)
+                                    </button>
+                                </div>
+                                {showDownloadSuccess && (
+                                    <div className="bg-emerald-600 text-white p-3 rounded-lg text-sm font-medium mt-3 shadow-lg flex items-center gap-2">
+                                        <span>¡Plan descargado con éxito!</span>
+                                    </div>
+                                )}
+                            </div>
+                            <div className="md:col-span-5 flex justify-center">
+                                <div className="relative w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96">
+                                    <div className="absolute inset-0 bg-gradient-to-tr from-violeta to-fucsia rounded-3xl transform rotate-6 scale-95 shadow-xl opacity-80"></div>
+                                    <div className="absolute inset-0 bg-slate-900/40 rounded-3xl transform -rotate-3 scale-95"></div>
+                                    <div className="absolute inset-0 bg-slate-200 rounded-3xl overflow-hidden border-4 border-white shadow-2xl">
+                                        <img src="Allyson_Nunez_Mendez.jpg" alt="Dra. Allyson Núñez" className="w-full h-full object-cover object-center" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* COMPROMISOS SECTORIALES */}
+                    <section id="sectores" className="py-20 bg-white px-6">
+                        <div className="max-w-7xl mx-auto">
+                            <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
+                                <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
+                                    Un Compromiso Sólido para <span className="text-violeta">Cada Sector</span>
+                                </h2>
+                                <p className="text-slate-600 text-sm sm:text-base">
+                                    Dado que toda la comunidad universitaria vota de manera unificada por cada puesto en el Concejo, mi plan aborda de manera integral y equitativa las necesidades de cada sector:
+                                </p>
+                            </div>
+
+                            <div className="flex flex-wrap justify-center gap-3 mb-12">
+                                {Object.keys(sectorsData).map(sector => (
+                                    <button
+                                        key={sector}
+                                        onClick={() => setActiveSector(sector)}
+                                        className={`px-6 py-4 rounded-xl text-sm font-bold transition-all shadow-sm flex items-center gap-2 ${activeSector === sector ? 'bg-gradient-to-r from-violeta to-fucsia text-white shadow-md' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}
+                                    >
+                                        {sectorsData[sector].title}
+                                    </button>
+                                ))}
+                            </div>
+
+                            <div className="bg-slate-50 rounded-3xl p-8 md:p-12 border border-slate-100 shadow-xl max-w-5xl mx-auto">
+                                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                                    <div className="lg:col-span-5 space-y-4">
+                                        <div className="inline-flex p-4 bg-white rounded-2xl shadow-md">
+                                            {sectorsData[activeSector].icon}
+                                        </div>
+                                        <h3 className="text-2xl font-extrabold text-violeta">{sectorsData[activeSector].title}</h3>
+                                        <p className="text-slate-600 font-medium text-sm leading-relaxed">{sectorsData[activeSector].subtitle}</p>
+                                    </div>
+                                    <div className="lg:col-span-7 space-y-4">
+                                        {sectorsData[activeSector].proposals.map((prop, idx) => (
+                                            <div key={idx} className="flex items-start gap-3 bg-white p-4 rounded-xl border shadow-sm">
+                                                <CheckIcon />
+                                                <p className="text-xs sm:text-sm font-medium text-slate-700 leading-relaxed">{prop}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* BIOGRAFÍA */}
+                    <section id="trayectoria" className="py-20 bg-slate-50 border-y px-6">
+                        <div className="max-w-7xl mx-auto grid md:grid-cols-12 gap-12 items-center">
+                            <div className="md:col-span-6 space-y-6">
+                                <span className="text-xs font-extrabold uppercase tracking-widest text-fucsia bg-pink-50 px-3.5 py-1.5 rounded-full">Mi Historia y Valores</span>
+                                <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
+                                    Compromiso real con la <span className="text-violeta">Educación y los DDHH</span>
+                                </h2>
+                                <p className="text-slate-600 text-sm leading-relaxed">
+                                    Soy docente investigadora en la UNED desde el año 2015, desempeñándome como Coordinadora de Cátedra de Estudio a Distancia e Investigación, de la Cátedra de ambiente, política y Sociedad, y de la Cátedra de Historia. Mi vocación es democratizar la educación superior.
+                                </p>
+                                <p className="text-slate-600 text-sm leading-relaxed">
+                                    He integrado comités gremiales y juntas directivas clave dentro de nuestra universidad (<strong>UNED-Pro, APROFUNED y SluNED</strong>). Conozco en profundidad el Estatuto Orgánico de nuestra UNED, y sé que representar tu voz en el Consejo Universitario requiere firmeza ideológica, ética y alta capacidad de negociación.
+                                </p>
+                            </div>
+                            <div className="md:col-span-6">
+                                <div className="bg-white p-8 rounded-3xl border shadow-xl space-y-6">
+                                    <h3 className="text-xl font-bold text-violeta mb-4">Formación Académica</h3>
+                                    <div className="relative border-l pl-6 space-y-6 ml-3">
+                                        <div className="relative">
+                                            <span className="absolute -left-[31px] top-1 w-4 h-4 bg-fucsia rounded-full border-4 border-white"></span>
+                                            <h4 className="text-sm font-bold text-slate-800">Doctorado en Educación</h4>
+                                            <p className="text-xs text-slate-500">Universidad de Chile y la OEA</p>
+                                        </div>
+                                        <div className="relative">
+                                            <span className="absolute -left-[31px] top-1 w-4 h-4 bg-violeta rounded-full border-4 border-white"></span>
+                                            <h4 className="text-sm font-bold text-slate-800">Máster en Derechos Humanos</h4>
+                                            <p className="text-xs text-slate-500">Universidad de Costa Rica (UCR)</p>
+                                        </div>
+                                        <div className="relative">
+                                            <span className="absolute -left-[31px] top-1 w-4 h-4 bg-purple-400 rounded-full border-4 border-white"></span>
+                                            <h4 className="text-sm font-bold text-slate-800">Científica Política y Docente</h4>
+                                            <p className="text-xs text-slate-500">Universidad de Costa Rica (UCR)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* BUSCADOR DE PROPUESTAS */}
+                    <section id="plan" className="py-20 bg-white px-6">
+                        <div className="max-w-7xl mx-auto">
+                            <div className="text-center max-w-3xl mx-auto space-y-4 mb-12">
+                                <h2 className="text-3xl sm:text-4xl font-extrabold">Explora el <span className="text-violeta">Plan de Trabajo</span></h2>
+                                <div className="relative max-w-lg mx-auto pt-4">
+                                    <input
+                                        type="text"
+                                        placeholder="Buscar temas (ej: 'salario', 'becas')..."
+                                        value={proposalSearch}
+                                        onChange={(e) => setProposalSearch(e.target.value)}
+                                        className="block w-full pl-6 pr-4 py-3.5 border border-slate-200 rounded-2xl bg-slate-50 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-fucsia/30"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                                {filteredEjes.map((item, idx) => (
+                                    <div key={idx} className="bg-slate-50 rounded-2xl p-6 border shadow-sm hover:shadow-md transition-all">
+                                        <span className="text-[10px] font-black uppercase text-fucsia bg-pink-100 px-2.5 py-1 rounded-full">{item.categoria}</span>
+                                        <h3 className="text-base font-bold text-violeta mt-3 mb-2">{item.eje}</h3>
+                                        <p className="text-xs text-slate-600 leading-relaxed">{item.descripcion}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* BUZÓN COMUNITARIO */}
+                    <section id="buzon" className="py-20 bg-slate-50 border-t px-6">
+                        <div className="max-w-7xl mx-auto grid md:grid-cols-12 gap-12 items-start max-w-6xl">
+                            <div className="md:col-span-5 bg-white p-8 rounded-3xl border shadow-xl space-y-4">
+                                <h3 className="text-2xl font-extrabold text-violeta">Tu Voz en el Concejo</h3>
+                                <form onSubmit={handleProposalSubmit} className="space-y-4">
+                                    <div>
+                                        <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Nombre o Iniciales</label>
+                                        <input type="text" value={formName} onChange={(e) => setFormName(e.target.value)} placeholder="Ej: Carlos B." className="w-full px-4 py-3 border rounded-xl text-sm" required />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Tu Sector</label>
+                                        <select value={formSector} onChange={(e) => setFormSector(e.target.value)} className="w-full px-4 py-3 border rounded-xl text-sm bg-slate-50 text-slate-700">
+                                            <option value="Estudiante">Estudiante</option>
+                                            <option value="Docente">Docente</option>
+                                            <option value="Administrativo">Personal Administrativo</option>
+                                            <option value="Sede Universitaria">Sedes / Territorio</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Propuesta</label>
+                                        <textarea value={formMessage} onChange={(e) => setFormMessage(e.target.value)} rows="3" placeholder="Escribe tu idea para mejorar la UNED..." className="w-full px-4 py-3 border rounded-xl text-sm" required></textarea>
+                                    </div>
+                                    <button type="submit" className="w-full bg-gradient-to-r from-violeta to-fucsia text-white py-3.5 rounded-xl font-bold">Enviar Propuesta</button>
+                                    {submitNotification && <p className="text-xs font-bold text-emerald-600 bg-emerald-50 p-3 rounded-lg">{submitNotification}</p>}
+                                </form>
+                            </div>
+                            <div className="md:col-span-7 space-y-4">
+                                <h4 className="text-base font-extrabold text-slate-800">Ideas de la Comunidad ({proposals.length})</h4>
+                                <div className="space-y-3 max-h-[400px] overflow-y-auto">
+                                    {proposals.map(p => (
+                                        <div key={p.id} className="bg-white p-5 rounded-2xl border shadow-sm space-y-2">
+                                            <div className="flex justify-between text-xs text-slate-500">
+                                                <span className="font-bold">{p.autor}</span>
+                                                <span>{p.fecha}</span>
+                                            </div>
+                                            <p className="text-xs italic text-slate-600">"{p.mensaje}"</p>
+                                            <div className="flex justify-between items-center pt-2">
+                                                <span className="text-[10px] font-black uppercase text-fucsia bg-pink-50 px-2 py-0.5 rounded">{p.sector}</span>
+                                                <button onClick={() => handleVote(p.id)} className="text-xs text-slate-600 hover:text-fucsia font-bold">❤️ {p.votos}</button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* CONTACTO */}
+                    <section id="contacto" className="py-20 bg-white px-6">
+                        <div className="max-w-7xl mx-auto bg-gradient-to-br from-violeta to-indigo-950 text-white rounded-3xl p-8 md:p-12 max-w-5xl shadow-2xl relative overflow-hidden">
+                            <div className="grid md:grid-cols-2 gap-10 items-center">
+                                <div className="space-y-4">
+                                    <span className="text-[10px] font-black uppercase tracking-widest text-pink-300 bg-white/15 px-3 py-1 rounded-full inline-block">Seamos Multiplicadores</span>
+                                    <h3 className="text-2xl sm:text-3xl font-extrabold">Llevemos la propuesta a cada rincón de la UNED</h3>
+                                    <p className="text-sm text-purple-100 font-light">Comparte este sitio oficial por WhatsApp con tus compañeros de cátedra, grupos estudiantiles o redes de graduados.</p>
+                                    <div className="flex flex-wrap gap-3">
+                                        <button onClick={handleCopyLink} className="bg-fucsia px-5 py-3 rounded-xl font-bold text-xs">{copiedLink ? '¡Enlace copiado!' : 'Copiar enlace oficial'}</button>
+                                    </div>
+                                </div>
+                                <div className="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/15 space-y-3 text-sm">
+                                    <h4 className="font-bold text-white">Contacto Directo con Allyson</h4>
+                                    <p className="text-xs text-purple-200">Correo: <a href="mailto:anunez@uned.ac.cr" className="font-bold text-white hover:underline">anunez@uned.ac.cr</a></p>
+                                    <p className="text-xs text-purple-200">Teléfono: <a href="tel:83740894" className="font-bold text-white">8374-0894</a></p>
+                                    <p className="text-xs text-purple-200">Sede: <span className="font-bold text-white">Sede Central UNED, Cátedra de Historia</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* FOOTER */}
+                    <footer className="bg-slate-900 text-slate-400 py-12 text-center">
+                        <img src="logotipo.png" alt="Logo" className="w-16 h-16 mx-auto mb-4 rounded-full" />
+                        <p className="font-bold text-white">Dra. Allyson Núñez Méndez</p>
+                        <p className="text-xs opacity-50 mt-2">Tribunal Electoral Universitario (TEUNED). Período 2026-2031.</p>
+                    </footer>
+
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
