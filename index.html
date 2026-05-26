@@ -308,52 +308,6 @@
                         </div>
                     </section>
 
-                    {/* COMPROMISOS SECTORIALES */}
-                    <section id="sectores" className="py-20 bg-white px-6">
-                        <div className="max-w-7xl mx-auto">
-                            <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
-                                <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
-                                    Un Compromiso Sólido con <span className="text-violeta">Cada Sector</span>
-                                </h2>
-                                <p className="text-slate-600 text-sm sm:text-base">
-                                    Mi plan aborda de manera integral y equitativa las necesidades de cada sector:
-                                </p>
-                            </div>
-
-                            <div className="flex flex-wrap justify-center gap-3 mb-12">
-                                {Object.keys(sectorsData).map(sector => (
-                                    <button
-                                        key={sector}
-                                        onClick={() => setActiveSector(sector)}
-                                        className={`px-6 py-4 rounded-xl text-sm font-bold transition-all shadow-sm flex items-center gap-2 ${activeSector === sector ? 'bg-gradient-to-r from-violeta to-fucsia text-white shadow-md' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}
-                                    >
-                                        {sectorsData[sector].title}
-                                    </button>
-                                ))}
-                            </div>
-
-                            <div className="bg-slate-50 rounded-3xl p-8 md:p-12 border border-slate-100 shadow-xl max-w-5xl mx-auto">
-                                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                                    <div className="lg:col-span-5 space-y-4">
-                                        <div className="inline-flex p-4 bg-white rounded-2xl shadow-md">
-                                            {sectorsData[activeSector].icon}
-                                        </div>
-                                        <h3 className="text-2xl font-extrabold text-violeta">{sectorsData[activeSector].title}</h3>
-                                        <p className="text-slate-600 font-medium text-sm leading-relaxed">{sectorsData[activeSector].subtitle}</p>
-                                    </div>
-                                    <div className="lg:col-span-7 space-y-4">
-                                        {sectorsData[activeSector].proposals.map((prop, idx) => (
-                                            <div key={idx} className="flex items-start gap-3 bg-white p-4 rounded-xl border shadow-sm">
-                                                <CheckIcon />
-                                                <p className="text-xs sm:text-sm font-medium text-slate-700 leading-relaxed">{prop}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
                     {/* BIOGRAFÍA */}
                     <section id="trayectoria" className="py-20 bg-slate-50 border-y px-6">
                         <div className="max-w-7xl mx-auto grid md:grid-cols-12 gap-12 items-center">
@@ -408,6 +362,53 @@
                             </div>
                         </div>
                     </section>
+
+                    {/* COMPROMISOS SECTORIALES */}
+                    <section id="sectores" className="py-20 bg-white px-6">
+                        <div className="max-w-7xl mx-auto">
+                            <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
+                                <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
+                                    Un Compromiso Sólido con <span className="text-violeta">Cada Sector</span>
+                                </h2>
+                                <p className="text-slate-600 text-sm sm:text-base">
+                                    Mi plan aborda de una manera coordinada e integral las necesidades de cada sector y de la Institución en conjunto:
+                                </p>
+                            </div>
+
+                            <div className="flex flex-wrap justify-center gap-3 mb-12">
+                                {Object.keys(sectorsData).map(sector => (
+                                    <button
+                                        key={sector}
+                                        onClick={() => setActiveSector(sector)}
+                                        className={`px-6 py-4 rounded-xl text-sm font-bold transition-all shadow-sm flex items-center gap-2 ${activeSector === sector ? 'bg-gradient-to-r from-violeta to-fucsia text-white shadow-md' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}
+                                    >
+                                        {sectorsData[sector].title}
+                                    </button>
+                                ))}
+                            </div>
+
+                            <div className="bg-slate-50 rounded-3xl p-8 md:p-12 border border-slate-100 shadow-xl max-w-5xl mx-auto">
+                                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                                    <div className="lg:col-span-5 space-y-4">
+                                        <div className="inline-flex p-4 bg-white rounded-2xl shadow-md">
+                                            {sectorsData[activeSector].icon}
+                                        </div>
+                                        <h3 className="text-2xl font-extrabold text-violeta">{sectorsData[activeSector].title}</h3>
+                                        <p className="text-slate-600 font-medium text-sm leading-relaxed">{sectorsData[activeSector].subtitle}</p>
+                                    </div>
+                                    <div className="lg:col-span-7 space-y-4">
+                                        {sectorsData[activeSector].proposals.map((prop, idx) => (
+                                            <div key={idx} className="flex items-start gap-3 bg-white p-4 rounded-xl border shadow-sm">
+                                                <CheckIcon />
+                                                <p className="text-xs sm:text-sm font-medium text-slate-700 leading-relaxed">{prop}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
 
                     {/* BUSCADOR DE PROPUESTAS */}
                     <section id="plan" className="py-20 bg-white px-6">
